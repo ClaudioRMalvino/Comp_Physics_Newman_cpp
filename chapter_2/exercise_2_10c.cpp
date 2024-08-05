@@ -101,7 +101,6 @@ std::vector<double> semi_empirical_mass(int Z) {
   results.push_back(max_BE);
 
   int index = find_index(values, max_BE);
-  std::cout << "Index: " << index << std::endl;
   results.push_back(static_cast<double>(Z + index));
 
   return results;
