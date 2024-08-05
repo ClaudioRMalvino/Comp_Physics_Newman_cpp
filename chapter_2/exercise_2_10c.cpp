@@ -16,7 +16,6 @@
 
 double E_per_nucleon(int Z, double A, double a5);
 std::vector<double> semi_empirical_mass(int Z);
-int find_index(const std::vector<double> &v, double val);
 std::string Z_input();
 void check_Z(int Z);
 void print_results(int Z);
@@ -81,39 +80,33 @@ double E_per_nucleon(int Z, double A, double a5) {
 
 std::vector<double> semi_empirical_mass(int Z) {
 
-  double a5;
   std::vector<double> values;
   std::vector<double> results;
+  std::vector<double> A_values;
 
   for (double A : std::views::iota(Z, 3 * Z + 1)) {
+    double a5;
     if (std::fmod(A, 2.0) != 0.0) {
-      double a5 = 0.0;
+      a5 = 0.0;
 
     } else if (Z % 2 == 0) {
-      double a5 = 12.0;
+      a5 = 12.0;
 
     } else {
-      double a5 = -12.0;
+      a5 = -12.0;
     }
     values.push_back(E_per_nucleon(Z, A, a5));
+    A_values.push_back(A);
   }
-  double max_BE{*std::max_element(values.begin(), values.end())};
-  results.push_back(max_BE);
 
-  int index = find_index(values, max_BE);
-  results.push_back(static_cast<double>(Z + index));
+  auto max_it = std::max_element(values.begin(), values.end());
+  double max_BE = *max_it;
+  int index = std::distance(values.begin(), max_it);
+  double most_stable_A = A_values[index];
+  results.push_back(max_BE);
+  results.push_back(most_stable_A);
 
   return results;
-}
-
-// Function finds the index of selected value in a vector
-int find_index(const std::vector<double> &v, double val) {
-  auto it = std::find(v.begin(), v.end(), val);
-  if (it != v.end()) {
-    return static_cast<int>(std::distance(v.begin(), it));
-  } else {
-    return -1; // or another sentinel value to indicate "not found"
-  }
 }
 
 // Function prompts user to input a value for Z
