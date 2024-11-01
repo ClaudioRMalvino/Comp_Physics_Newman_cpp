@@ -10,38 +10,40 @@
 
 // altitude_of_satellite takes the orbital period as parameter,
 // and returns the orbital height necessary
-int altitude_of_satellite(double T) {
-  const double G{6.67E-11}; // Newton's gravitational constant
-  const double M{5.97E+24}; // Mass of the earth [kg]
-  const double R{6.37E+6};  // Earth's radius [m]
-  const double pi{std::acos(-1)};
+float altitude_of_satellite(float period)
+{
+    const float G{6.67E-11};  // Newton's gravitational constant
+    const float mass{5.97E+24}; // Mass of the earth [kg]
+    const float radius_e{6.37E+6};  // Earth's radius [m]
+    const float pi{static_cast<float>(std::acos(-1))};
 
-  // Calculates the orbital height necessary to sustain
-  // an orbital period T
-  double h = std::pow((G * M * std::pow(T, 2)) 
-            / ( 4.0 * std::pow(pi, 2)), 1.0/3.0) - R;
+    // Calculates the orbital height necessary to sustain
+    // an orbital period
+    float height= std::pow((G * mass * std::pow(period, 2)) / (4.0 * std::pow(pi, 2)), 1.0 / 3.0) - radius_e;
 
-  return h;
+    return height;
 }
 
 // convert_to_sec converts the input for the orbital period
 // provides in minutes into seconds to properly calculates orbital height
-double convert_to_sec(double minutes) {
-  double sec{minutes * 60};
-  return sec;
+float convert_to_sec(float minutes)
+{
+    float sec{minutes * 60};
+    return sec;
 }
 
-int main() {
+int main()
+{
 
-  std::cout << "Input a orbital period in units of minutes: ";
+    std::cout << "Input a orbital period in units of minutes: ";
 
-  double min{};
-  std::cin >> min;
+    float minutes{};
+    std::cin >> minutes;
 
-  double T{convert_to_sec(min)};
+    float period{convert_to_sec(minutes)};
 
-  std::cout << '\n' << "For orbital period of " << min << " minutes" << '\n'
-            << "Required orbital height: " << altitude_of_satellite(T) 
-            << " m" << std::endl;
-  return 0;
+    std::cout << '\n'
+              << "For orbital period of " << minutes << " minutes" << '\n'
+              << "Required orbital height: " << altitude_of_satellite(period) << " m" << std::endl;
+    return 0;
 }
