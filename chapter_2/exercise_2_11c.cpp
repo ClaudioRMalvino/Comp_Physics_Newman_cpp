@@ -139,7 +139,7 @@ int main()
         }
         catch (const std::invalid_argument &e)
         {
-            std::cerr << "Invalud input. Please try again." << '\n';
+            std::cerr << "Invalid input. Please try again." << '\n';
         }
     }
     return 0;
