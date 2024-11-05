@@ -7,6 +7,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <numbers>
 #include <string>
 #include <tuple>
 
@@ -15,7 +16,7 @@
 std::tuple<double, double> cart_to_polar(double x, double y)
 {
 
-    const double pi{std::acos(-1)};
+    const double Pi{std::numbers::pi};
 
     // Calculates the distance from the origin at point (x,y)
     double r = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
@@ -76,11 +77,12 @@ int main()
 
             auto [r, theta] = cart_to_polar(x, y);
 
-            std::cout << '\n' << "(r: " << r << ", theta: " << theta << ")" << '\n' << std::endl;
+            std::cout << '\n'
+                      << "(r: " << r << ", theta: " << theta << ")" << '\n';
         }
         catch (const std::invalid_argument &e)
         {
-            std::cerr << "Invalid input. Please enter numeric value" << std::endl;
+            std::cerr << "Invalid input. Please enter numeric value" << '\n';
         }
     }
     return 0;

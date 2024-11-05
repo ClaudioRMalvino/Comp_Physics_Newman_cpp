@@ -8,19 +8,20 @@ Textbook: Computational Physics by Mark Newman
 #include <iomanip>
 #include <iostream>
 
-int main() {
+int main()
+{
 
-  double g{9.81}; // gravity of earth [m/s]
+    double g{9.81}; // gravity of earth [m/s]
 
-  std::cout << "Input height in meters: ";
+    std::cout << "Input height in meters: ";
 
-  double h{}; // height [m]
-  std::cin >> h;
+    double h{}; // height [m]
+    std::cin >> h;
 
-  double t = sqrt((2 * h) / g); // calculates trave; time
+    double t = sqrt((2 * h) / g); // calculates trave; time
 
-  std::cout << "Total travel time: " << std::fixed << std::setprecision(2) << t
-            << " s";
+    std::cout << "Total travel time: " << std::fixed << std::setprecision(2)
+              << t << " s";
 
-  return 0;
+    return 0;
 }
