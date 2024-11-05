@@ -3,6 +3,8 @@
 Welcome to my repository showcasing my C++ project in computational physics. These projects highlight my ability to solve complex physics problems using advanced programming techniques.
 All exercises will be drawn from Mark Newman's textbook Computational Physics. 
 
+I will be utilizing C++20 through out this project.
+
 Covered topics: 
 
 1. **Chapter 2: Python Programming for Physicists**
