@@ -9,13 +9,13 @@
 #include <iostream>
 #include <string>
 
-// Global constants
-
-const double m{0.5109989461};  // Mass of electron [eV]
-const double h_bar{6.5821196}; // Reduced Planck constant [eV*s]
-
-// Function declarations
-
+namespace Constant
+{
+    // Global constants
+    const double g_m{0.5109989461};  // Mass of electron [eV]
+    const double g_h_bar{6.5821196}; // Reduced Planck constant [eV*s]
+{
+// Forward function declarations
 double k1(double E);
 double k2(double E, double V);
 double T(double k1, double k2);
@@ -85,13 +85,13 @@ int main()
 // k1 calculates initial wave vector k1
 double k1(double E)
 {
-    return std::sqrt(2 * m * E / h_bar);
+    return std::sqrt(2 * Constant::g_m * E / Constant::g_h_bar);
 }
 
 // k2 calculates reflected wave vector k2
 double k2(double E, double V)
 {
-    return std::sqrt(2 * m * (E - V) / h_bar);
+    return std::sqrt(2 * Constant:g_m * (E - V) / Constant::g_h_bar);
 }
 
 // R calculates the probability of reflecting back towards the initial source

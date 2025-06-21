@@ -11,11 +11,12 @@
 #include <string>
 #include <vector>
 
-// Global constants
-
-constexpr double M{1.9891E+30}; // Mass of the sun
-constexpr double G{6.6738E-11}; // Newton's gravitational constant
-
+namespace Constant
+{
+    // Global constants
+    constexpr double M{1.9891E+30}; // Mass of the sun
+    constexpr double G{6.6738E-11}; // Newton's gravitational constant
+{
 // Function declarations
 
 double v2(double v1, double l1);
@@ -105,7 +106,7 @@ double v2(double v1, double l1)
 
     std::vector<double> solutions;
 
-    double b{-(((2 * G * M) / (v1 * l1)))};
+    double b{-(((2 * Constant::G * Constant::M) / (v1 * l1)))};
     double c{-std::pow(v1, 2) + ((2 * G * M) / (l1))};
 
     // calculates v2 utilziing the quadratic formula

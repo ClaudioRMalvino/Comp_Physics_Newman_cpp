@@ -11,40 +11,10 @@
 #include <string>
 #include <tuple>
 
-// cart_to_polar calculates the radius (r) from the origin of point (x,y)
-// and the angle theta. Returns a tuple (r, theta).
-std::tuple<double, double> cart_to_polar(double x, double y)
-{
-
-    const double Pi{std::numbers::pi};
-
-    // Calculates the distance from the origin at point (x,y)
-    double r = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
-
-    // Calculates the angle at point (x/y) from the axis and converts to degrees
-    double theta = std::atan(y / x) * (180.0 / pi);
-
-    return std::make_tuple(r, theta);
-}
-
-// get_x_pos asks for user input to define the x position and returns a string
-std::string get_x_pos()
-{
-
-    std::cout << "Enter x: ";
-    std::string inputx;
-    std::cin >> inputx;
-    return inputx;
-}
-// get_y_pos asks for user input to define the y position and returns a string
-std::string get_y_pos()
-{
-
-    std::cout << "Enter y: ";
-    std::string inputy;
-    std::cin >> inputy;
-    return inputy;
-}
+// Forward function declarations
+std::tuple<double, double> cart_to_polar(double x, double y);
+std::string get_x_pos();
+std::string get_y_pos();
 
 int main()
 {
@@ -86,4 +56,39 @@ int main()
         }
     }
     return 0;
+}
+
+// cart_to_polar calculates the radius (r) from the origin of point (x,y)
+// and the angle theta. Returns a tuple (r, theta).
+std::tuple<double, double> cart_to_polar(double x, double y)
+{
+
+    const double Pi{std::numbers::pi};
+
+    // Calculates the distance from the origin at point (x,y)
+    double r = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
+
+    // Calculates the angle at point (x/y) from the axis and converts to degrees
+    double theta = std::atan(y / x) * (180.0 / pi);
+
+    return std::make_tuple(r, theta);
+}
+
+// get_x_pos asks for user input to define the x position and returns a string
+std::string get_x_pos()
+{
+
+    std::cout << "Enter x: ";
+    std::string inputx;
+    std::cin >> inputx;
+    return inputx;
+}
+// get_y_pos asks for user input to define the y position and returns a string
+std::string get_y_pos()
+{
+
+    std::cout << "Enter y: ";
+    std::string inputy;
+    std::cin >> inputy;
+    return inputy;
 }

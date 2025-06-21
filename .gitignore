@@ -149,5 +149,4 @@ ipch/
 # Formatters
 .clang-format
 .clang-tidy
-.editorconfig
 .gitattributes

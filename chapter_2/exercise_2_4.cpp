@@ -12,8 +12,74 @@
 #include <stdexcept>
 #include <string>
 
-// Global constant
-double c = 299792458.0; // Speed of light [m/s]
+namespace Constant
+{
+    // Global constant
+    const double g_c = 299792458.0; // Speed of light [m/s]
+{
+
+// Forward function declerations
+
+double earth_ref_frame(double x, double v);
+double ship_ref_frame(double x, double v);
+std::string get_velocity();
+void check_velocity(double v);
+void check_distance(double x);
+
+int main()
+{
+
+    const double conversion{31556952.}; // conversion from seconds to years
+
+    std::cout << "Calculating travel time from Earth reference frame and"
+              << " passenger reference frame." << '\n'
+              << "Input 'q' to quit" << std::endl;
+
+    while (true)
+    {
+
+        auto inputx{get_distance()};
+        if (inputx == "q")
+        {
+            break;
+        }
+
+        auto inputv{get_velocity()};
+        if (inputv == "q")
+        {
+            break;
+        }
+
+        try
+        {
+
+            double x = std::stod(inputx);
+            double v = std::stod(inputv);
+
+            check_distance(x);
+            check_velocity(v);
+
+            auto earth_frame{earth_ref_frame(x, v) / conversion};
+            auto ship_frame{ship_ref_frame(x, v) / conversion};
+
+            std::cout << '\n'
+                      << "Travel time from Earth reference frame: "
+                      << std::fixed << std::setprecision(2) << earth_frame
+                      << " years" << '\n'
+                      << "Travel time from ship reference frame: " << std::fixed
+                      << std::setprecision(2) << ship_frame << " years"
+                      << std::endl;
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cerr << "Invalid input. Please enter numeric value" << '\n'
+                      << std::endl;
+        }
+    }
+    return 0;
+}
+
+// Function definitions
 
 // Function calculates the time it takes to travel distance x at a fraction
 // of the speed of light from Earth reference point.
@@ -71,57 +137,4 @@ void check_distance(double x)
     {
         throw std::runtime_error("Velocity must be between > 0");
     }
-}
-
-int main()
-{
-
-    const double conversion{31556952.}; // conversion from seconds to years
-
-    std::cout << "Calculating travel time from Earth reference frame and"
-              << " passenger reference frame." << '\n'
-              << "Input 'q' to quit" << std::endl;
-
-    while (true)
-    {
-
-        auto inputx{get_distance()};
-        if (inputx == "q")
-        {
-            break;
-        }
-
-        auto inputv{get_velocity()};
-        if (inputv == "q")
-        {
-            break;
-        }
-
-        try
-        {
-
-            double x = std::stod(inputx);
-            double v = std::stod(inputv);
-
-            check_distance(x);
-            check_velocity(v);
-
-            auto earth_frame{earth_ref_frame(x, v) / conversion};
-            auto ship_frame{ship_ref_frame(x, v) / conversion};
-
-            std::cout << '\n'
-                      << "Travel time from Earth reference frame: "
-                      << std::fixed << std::setprecision(2) << earth_frame
-                      << " years" << '\n'
-                      << "Travel time from ship reference frame: " << std::fixed
-                      << std::setprecision(2) << ship_frame << " years"
-                      << std::endl;
-        }
-        catch (const std::invalid_argument &e)
-        {
-            std::cerr << "Invalid input. Please enter numeric value" << '\n'
-                      << std::endl;
-        }
-    }
-    return 0;
 }
