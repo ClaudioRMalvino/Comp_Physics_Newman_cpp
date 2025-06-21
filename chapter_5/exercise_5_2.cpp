@@ -27,7 +27,7 @@ namespace Constant
 double func(double val);
 
 /**
- * Function calculates an integral utilziing the Extended Simpson Rule
+ * Function calculates an integral utilizing the Extended Simpson Rule
  * @param upper_bound Upper limit of integrations
  * @param lower_bound Lower limit of integration
  * @param num_slices  Number of slices
