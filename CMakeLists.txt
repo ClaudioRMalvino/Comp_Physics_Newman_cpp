@@ -17,7 +17,6 @@ message(STATUS "Python3_INCLUDE_DIRS: ${Python3_INCLUDE_DIRS}")
 # Add matplotlib-cpp include directory
 set(MATPLOTLIB_CPP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/matplotlib-cpp")
 
-
 # Automatically find all .cpp files and create executables
 file(GLOB_RECURSE ALL_CPP_FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/chapter_*/*.cpp"
@@ -32,9 +31,8 @@ foreach(cpp_file ${ALL_CPP_FILES})
     # Create unique executable name (parent_dir_exe_name)
     set(full_exe_name "${parent_dir}_${exe_name}")
 
-    # Create executable
-    add_executable(${full_exe_name} ${cpp_file}
-            chapter_5/exercise_5_2.cpp)
+    # Create executable - ONLY include the specific cpp file
+    add_executable(${full_exe_name} ${cpp_file})
 
     # Link Python libraries to ALL executables (whether they use plotting or not)
     target_link_libraries(${full_exe_name} Python3::Python Python3::NumPy)

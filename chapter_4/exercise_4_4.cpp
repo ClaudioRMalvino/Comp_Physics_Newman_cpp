@@ -61,6 +61,8 @@ void plot_func(double num_slices);
 
 int main()
 {
+    plt::backend("Agg");
+
     std::cout << "Calculating Integral of (1 - x^2)^(1/2) from [-1, 1]" << '\n';
 
     while (true)
@@ -109,8 +111,8 @@ double per_error(double numerical, double actual)
 
 std::string input_num_slices()
 {
-    std::cout << "Input number of slices: ";
-    std::cout << "Input 'q' to quit" << std::endl;
+    std::cout << "Input 'q' to quit" << '\n';
+    std::cout << "Input number of slices: " << '\n';
     std::string input;
     std::cin >> input;
     return input;
@@ -138,14 +140,12 @@ void plot_func(double num_slices)
     try
     {
         plt::plot(x, y, "b-");
-        plt::fill_between(x, y, std::vector<double>(x.size(), 0.0),
-            {{"alpha", "0.1"},{"color", "blue"}});
-        plt::title("($f(x) = sqrt{1 - x^{2}}$)");
+        plt::title("(f(x) = sqrt(1 - x^2)");
         plt::xlabel("x");
         plt::ylabel("y");
         plt::ylim(0.0, 1.5);
 
-        plt::save("semicircle_plot.png");
+        plt::save("../chapter_4/semicircle_plot.png");
         std::cout << "Plot saved as semicircle_plot.png" << '\n';
     } catch (const std::exception &e)
     {
