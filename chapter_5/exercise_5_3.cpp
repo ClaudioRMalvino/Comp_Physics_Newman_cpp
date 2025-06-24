@@ -7,9 +7,14 @@
 #include <cmath>
 #include <iostream>
 #include <iomanip>
+#include "../third_party/matplotlibcpp.h"
 #include <stdexcept>
 #include <string>
 #include <tuple>
+
+// Namespaces
+
+namespace plt = matplotlibcpp;
 
 // Forward function declarations
 
@@ -57,6 +62,12 @@ void printResults( double result, double upper_limit, double num_slices);
  */
 void valueChecks(double upper_limit, double num_slices, double width);
 
+/** Plots the function f(x) = e^{-t^{2}} using matplotlib-cpp
+ *
+ * @param upper_limit
+ */
+void plot_func(double upper_limit);
+
 int main()
 {
     while (true)
@@ -75,6 +86,7 @@ int main()
                 ) };
 
             printResults(result, upper_limit, num_slices);
+            plot_func(upper_limit);
 
         } catch (const std::invalid_argument &e)
         {
@@ -164,4 +176,36 @@ void valueChecks(double upper_limit, double width, double num_slices)
         throw std::runtime_error("All parameters must be > 0");
     }
 }
+
+void plot_func(double upper_limit)
+{
+
+    plt::backend("Agg");
+    std::vector<double> xs, ys;
+    const double start {0.0};
+    double end { upper_limit };
+    const int num_points { 1000 };
+
+    for (int i = 0; i < num_points; ++i)
+    {
+        double value = start + ((end - start) * i / (num_points -1));
+        xs.push_back(value);
+        ys.push_back(std::exp(- (value * value)));
+    }
+    try
+    {
+        plt::plot(xs, ys, "b-");
+        plt::title("(f(x) = e^{-x^{2}})");
+        plt::xlabel("x");
+        plt::ylabel("y");
+        plt::ylim(0.0, 1.5);
+
+        plt::save("../chapter_5/exercise_5_3_plot.png");
+        std::cout << "Plot saved as exercise_5_3_plot.png" << '\n';
+    } catch (const std::exception &e)
+    {
+        std::cerr << "Could not create plot: " << e.what() << '\n';
+    }
+}
+
 
