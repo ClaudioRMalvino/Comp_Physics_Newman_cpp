@@ -4,3 +4,4 @@
  *Textbook: Computational Physics by Mark Newman
 
 #include <iostream>
+#include <fstream>
