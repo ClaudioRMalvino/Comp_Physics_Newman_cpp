@@ -11,8 +11,21 @@
 #include <typeinfo>
 
 // Function declaration
+
+/** @brief Calculates the nth Catalan number
+ * @param max_val The maximum value to calculate the Catalan number for
+ */
 void catalan_num(int max_val);
+
+/** @brief Checks if the input value is valid
+ * @param max_val The maximum value to calculate the Catalan number for
+ * @throws std::runtime_error if input is invalid
+ */
 void check_input_val(int max_val);
+
+/** @brief Prompts user for input
+ * @return The input string (which may be a number or 'q' to quit)
+ */
 std::string val_input();
 
 int main()
@@ -23,12 +36,12 @@ int main()
     while (true)
     {
 
-        auto max_val_input{val_input()};
+        const std::string max_val_input{val_input()};
         if (max_val_input == "q")
         {
             break;
         }
-        int max_val{std::stoi(max_val_input)};
+        const int max_val{std::stoi(max_val_input)};
 
         try
         {
@@ -48,8 +61,7 @@ int main()
 
 // Function definitions
 
-// Function calculates Catalan numbers for numbers <= max_val
-void catalan_num(int max_val)
+void catalan_num(const int max_val)
 {
 
     double c0{1};

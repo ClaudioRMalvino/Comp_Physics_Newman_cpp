@@ -112,28 +112,27 @@ int main()
 
     while (true)
     {
-        auto num_tosses_input{get_num_tosses()};
+        const std::string num_tosses_input{get_num_tosses()};
         if (num_tosses_input == "q")
         {
             break;
         }
 
-        auto target_input{get_target()};
+        const std::string target_input{get_target()};
         if (target_input == "q")
         {
             break;
         }
 
-
-        int num_tosses{std::stoi(num_tosses_input)};
-        int target{std::stoi(target_input)};
+        const int num_tosses{std::stoi(num_tosses_input)};
+        const int target{std::stoi(target_input)};
 
         try
         {
             check_values(num_tosses, target);
 
-            auto prob1{unbiased_coin_toss(num_tosses, target)};
-            auto prob2{prob_k_or_more(num_tosses, target)};
+            const double prob1{unbiased_coin_toss(num_tosses, target)};
+            const double prob2{prob_k_or_more(num_tosses, target)};
 
             print_results(prob1, prob2, num_tosses, target);
         }
@@ -174,9 +173,9 @@ double binomial_coefficient(int n, int k)
     {
         return 1;
     }
-    double numerator{factorial(n)};
-    double denominator{factorial(k) * factorial(n - k)};
-    double binomial_coef{numerator / denominator};
+    const double numerator{factorial(n)};
+    const double denominator{factorial(k) * factorial(n - k)};
+    const double binomial_coef{numerator / denominator};
 
     return binomial_coef;
 }
@@ -184,7 +183,7 @@ double binomial_coefficient(int n, int k)
 
 double unbiased_coin_toss(int num_tosses, int target)
 {
-    double probability{binomial_coefficient(num_tosses, target) *
+    const double probability{binomial_coefficient(num_tosses, target) *
                        (std::pow(0.5, num_tosses))};
     return probability;
 }
@@ -198,7 +197,7 @@ double prob_k_or_more(int num_tosses, int K)
         values.push_back(unbiased_coin_toss(num_tosses, i));
     }
 
-    double probability = sum(values);
+    const double probability = sum(values);
 
     return probability;
 }

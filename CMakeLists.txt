@@ -1,7 +1,13 @@
 cmake_minimum_required(VERSION 3.31)
 project(Comp_Physics_Newman_cpp)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Explicitly enable C++23 for GCC
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++23")
+endif()
 
 # Set conda environment path
 set(Python3_ROOT_DIR "/home/claudio/miniconda3/envs/comp_phys")
@@ -32,7 +38,11 @@ foreach(cpp_file ${ALL_CPP_FILES})
     set(full_exe_name "${parent_dir}_${exe_name}")
 
     # Create executable - ONLY include the specific cpp file
-    add_executable(${full_exe_name} ${cpp_file})
+    add_executable(${full_exe_name} ${cpp_file}
+            chapter_5/integration_methods.cpp
+            chapter_5/integration_methods.h
+
+    )
 
     # Link Python libraries to ALL executables (whether they use plotting or not)
     target_link_libraries(${full_exe_name} Python3::Python Python3::NumPy)

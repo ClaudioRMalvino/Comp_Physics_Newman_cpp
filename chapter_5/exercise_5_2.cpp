@@ -6,6 +6,7 @@
 #include<array>
 #include<cmath>
 #include <iomanip>
+#include "integration_methods.hpp"
 #include<iostream>
 
 // Namespaces
@@ -19,24 +20,6 @@ namespace Constant
 
 // Forward declarations
 
-/**
- * Function calculates the value for f(x) = x^4 - 2*x + 1
- * @param val
- * @return
- */
-double func(double val);
-
-/**
- * Function calculates an integral utilizing the Extended Simpson Rule
- * @param upper_bound Upper limit of integrations
- * @param lower_bound Lower limit of integration
- * @param num_slices  Number of slices
- * @return The area under the function
- */
-double extSimpsonRule(
-                        double upper_bound,
-                        double lower_bound,
-                        double num_slices );
 
 /**
  * Function calculates the percent error between the numerical value and the
@@ -60,33 +43,6 @@ int main()
 
 // Function definitions
 
-double func( double val)
-{
-    return std::pow(val, 4) - 2*val + 1;
-}
-double extSimpsonRule(
-    double upper_bound,
-    double lower_bound,
-    double num_slices)
-{
-
-    double width = (upper_bound-lower_bound)/num_slices;
-    double constant = width / 3.0;
-    double integral = constant * (func(lower_bound ) + func(upper_bound));
-    double odds { 0.0 };
-    double evens { 0.0 };
-
-    for (int i = 1; i < num_slices; i += 2)
-    {
-        odds += func(lower_bound+ (i*width));
-    }
-    for (int i = 2; i < num_slices; i += 2)
-    {
-        evens += func(lower_bound+ (i*width));
-    }
-    integral += constant * (4*odds + 2*evens);
-    return integral;
-}
 
 double per_error(double numerical, double actual)
 {
@@ -95,16 +51,19 @@ double per_error(double numerical, double actual)
 
 void print_results()
 {
-    for (double i : Constant::num_slices)
+    for (double num_slice : Constant::num_slices)
     {
-        double result = extSimpsonRule(
-                                    Constant::upper_bound,
-                                    Constant::lower_bound,
-                                    i);
+        auto func = [](double x_val) {return std::pow(x_val, 4) - 2*x_val + 1;
+        };
+        double result = ext_simpson_rule(
+            func,
+            Constant::lower_bound,
+            Constant::upper_bound,
+            num_slice);
         double percent_error = per_error(result, Constant::actual);
 
         std::cout << std::fixed << std::setprecision(5);
-        std::cout << "For N = " << i << '\n';
+        std::cout << "For N = " << num_slice << '\n';
         std::cout << "Result = " << result << '\n';
         std::cout << "Error = " << percent_error << " % " << '\n';
     }

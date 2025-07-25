@@ -12,15 +12,25 @@
 #include <vector>
 
 // Function declaration
+/** @brief Calculates the approximate nuclear binding energy per nucleon
+ * of an atom with atomic number atomic_num and mass number atomic_mass.
+ * Utilizes the semi-empirical mass formula.
+ *
+ * @param atomic_num The atomic number
+ * @param atomic_mass The atomic mass
+ * @param a5 The a5 parameter
+ *
+ * @returns binding energy per nucleon (B/atomic_mass) in units of MeV
+ */
+constexpr double E_per_nucleon(int atomic_num, double atomic_mass, double a5);
 
-double E_per_nucleon(int Z, double A, double a5);
 void semi_empirical_mass();
 
 int main()
 {
 
     std::cout
-        << "Nuclear Binding Energy Calculator (semi-empirical mass approx)"
+        << "Nuclear binding_energyinding Energy Calculator (semi-empirical mass approx)"
         << std::endl;
     semi_empirical_mass();
 
@@ -29,52 +39,39 @@ int main()
 
 // Function definitions
 
-/* Function calculates the approximate nuclear binding energy per nucleon
- * of an atom with atmoic number Z and mass number A.
- * Utilizes the semi-empirical mass formula.
- *
- * Returns binding energy per nucleon (B/A) in units of MeV
- */
-double E_per_nucleon(int Z, double A, double a5)
+constexpr double E_per_nucleon(int atomic_num, double atomic_mass, double a5)
 {
+    constexpr double a1{15.8};  // [MeV]
+    constexpr double a2{18.3};  // [MeV]
+    constexpr double a3{0.714}; // [MeV]
+    constexpr double a4{23.2};  // [MeV]
 
-    const double a1{15.8};  // [MeV]
-    const double a2{18.3};  // [MeV]
-    const double a3{0.714}; // [MeV]
-    const double a4{23.2};  // [MeV]
+    const double term1 = a1 * atomic_mass - a2 * std::pow(atomic_mass, 2.0 / 3.0);
+    const double term2 = a3 * ((atomic_num * atomic_num) / std::pow(atomic_mass, 1.0 / 3.0));
+    const double term3 = (a4 * ((atomic_mass - 2 * atomic_num)*(atomic_mass - 2 * atomic_num)))
+                        / atomic_mass;
+    const double term4 = a5 / std::sqrt(atomic_mass);
 
-    double term1 = a1 * A - a2 * std::pow(A, 2.0 / 3.0);
-    double term2 = a3 * ((std::pow(Z, 2)) / (std::pow(A, 1.0 / 3.0)));
-    double term3 = (a4 * (std::pow(A - 2 * Z, 2))) / A;
-    double term4 = a5 / std::sqrt(A);
+    const double binding_energy = term1 - term2 - term3 + term4;
 
-    double B = term1 - term2 - term3 + term4;
-
-    return B / A;
+    return binding_energy / atomic_mass;
 }
-
-/* Function provides the logical steps towards defining the value a5
- *  for E_per_nucleon parameter. It further calculates the most stable nucleus
- *  by running through all values of A in [Z, 3Z].
- *
- *  Returns the max binding energy per nuclean and its corresponding isotope A
- */
 
 void semi_empirical_mass()
 {
 
-    for (int Z : std::views::iota(1, 101))
+    for (int atomic_num : std::views::iota(1, 101))
     { // 1 to 100 inclusive
         std::vector<double> values;
-        std::vector<double> A_values;
-        for (double A : std::views::iota(Z, 3 * Z + 1))
+        std::vector<double> atomic_mass_values;
+        for (double atomic_mass : std::views::iota(atomic_num, 3 * atomic_num + 1))
         {
             double a5;
-            if (std::fmod(A, 2.0) != 0.0)
+            if (std::fmod(atomic_mass, 2.0) != 0.0)
             {
                 a5 = 0.0;
             }
-            else if (Z % 2 == 0)
+            else if (atomic_num % 2 == 0)
             {
                 a5 = 12.0;
             }
@@ -82,24 +79,24 @@ void semi_empirical_mass()
             {
                 a5 = -12.0;
             }
-            values.push_back(E_per_nucleon(Z, A, a5));
-            A_values.push_back(A);
+            values.push_back(E_per_nucleon(atomic_num, atomic_mass, a5));
+            atomic_mass_values.push_back(atomic_mass);
         }
 
         auto max_it = std::max_element(values.begin(), values.end());
-        double max_BE = *max_it;
-        int index = std::distance(values.begin(), max_it);
-        double most_stable_A = A_values[index];
+        const double max_binding_energy = *max_it;
+        const int index = std::distance(values.begin(), max_it);
+        const double most_stable_atomic_mass = atomic_mass_values[index];
 
         // Prints the calculated values for each element
-        std::cout << '\n' << "Atomic number: " << Z << std::endl;
+        std::cout << '\n' << "atomic_masstomic number: " << atomic_num << '\n';
         std::cout << std::fixed << std::setprecision(4)
-                  << "Highest binding energy per nucleon: " << max_BE << " MeV"
-                  << std::endl;
+                  << "Highest binding energy per nucleon: " << max_binding_energy
+                    << " MeV "<< '\n';
         std::cout << std::fixed << std::setprecision(2)
-                  << "Most stable isotope: " << most_stable_A << " u" << '\n'
-                  << std::endl;
+                  << "Most stable isotope: " << most_stable_atomic_mass
+                    << " u" << '\n';
         std::cout << "----------------------------------------------------\n"
-                  << std::endl;
+                  << '\n';
     }
 }

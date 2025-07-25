@@ -9,22 +9,24 @@
 #include <iostream>
 #include <ranges>
 #include <string>
+// Namespace declerations
+namespace mp = boost::multiprecision;
 
 // Function Declaration
 /**
  * @brief Calculates the factorial of an integer
  * @param x The integer to calculate factorial for
- * @return The factorial as a boost::multiprecision::cpp_int
+ * @return The factorial as a mp::cpp_int
  */
-boost::multiprecision::cpp_int factorial(int x);
+mp::cpp_int factorial(int num);
 
 /**
  * @brief Calculates the binomial coefficient (n choose k)
  * @param n The total number of items
  * @param k The number of items to choose
- * @return The binomial coefficient as a boost::multiprecision::cpp_int
+ * @return The binomial coefficient as a mp::cpp_int
  */
-boost::multiprecision::cpp_int binomial_coefficient(int n, int k);
+mp::cpp_int binomial_coefficient(int n, int k);
 
 /**
  * @brief Prompts for and reads the value of n from user input
@@ -53,33 +55,33 @@ int main()
 
     while (true)
     {
-        auto ninput{n_input()};
+        const std::string ninput{n_input()};
         if (ninput == "q")
         {
             break;
         }
-        int n{std::stoi(ninput)};
+        const mp::cpp_int n(ninput);
 
-        auto kinput{k_input()};
+        const std::string kinput{k_input()};
         if (kinput == "q")
         {
             break;
         }
-        int k{std::stoi(kinput)};
+        const mp::cpp_int k(kinput);
 
         try
         {
 
             check_values(n, k);
-            auto result = binomial_coefficient(n, k);
+            const mp::cpp_int result = binomial_coefficient(n, k);
 
             std::cout << "Binomial coefficient for (" << n << ", " << k
-                      << "): " << result << std::endl;
+                      << "): " << result << '\n';
         }
         catch (const std::invalid_argument &e)
         {
             std::cerr << "Invalid input. PLease enter a numeric value" << '\n'
-                      << std::endl;
+                      << '\n';
         }
     }
     return 0;
@@ -87,18 +89,18 @@ int main()
 
 // Function Definitions
 
-boost::multiprecision::cpp_int factorial(int x)
+mp::cpp_int factorial(int num)
 {
 
-    boost::multiprecision::cpp_int f = 1;
-    for (int i : std::views::iota(1, x + 1))
+    mp::cpp_int f = 1;
+    for (int i : std::views::iota(1, num + 1))
     {
         f *= i;
     }
     return f;
 }
 
-boost::multiprecision::cpp_int binomial_coefficient(int n, int k)
+mp::cpp_int binomial_coefficient(int n, int k)
 {
 
     if (k == 0)
@@ -107,10 +109,10 @@ boost::multiprecision::cpp_int binomial_coefficient(int n, int k)
     }
     else
     {
-        boost::multiprecision::cpp_int numerator = factorial(n);
-        boost::multiprecision::cpp_int denominator =
+        mp::cpp_int numerator = factorial(n);
+        mp::cpp_int denominator =
             factorial(k) * factorial(n - k);
-        boost::multiprecision::cpp_int binomial_coef = numerator / denominator;
+        mp::cpp_int binomial_coef = numerator / denominator;
         return binomial_coef;
     }
 }

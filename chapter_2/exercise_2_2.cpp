@@ -12,13 +12,28 @@
 //Global constants
 namespace Constant
 {
-    const double g_G{6.67E-11};       // Newton's gravitational constant
-    const double g_mass{5.97E+24};    // Mass of the earth [kg]
-    const double g_radius_e{6.37E+6}; // Earth's radius [m]
-{
+constexpr double g_G{6.67E-11};       // Newton's gravitational constant
+constexpr double g_mass{5.97E+24};    // Mass of the earth [kg]
+constexpr double g_radius_e{6.37E+6}; // Earth's radius [m]
+}
 
-// Function forward declerations
+// Function forward decleration
+
+/**
+ * Function calculates the orbital height necessary to sustain
+ * an orbital period
+ *
+ * @param period orbital period in seconds
+ * @return orbital height in meters
+ */
 double altitude_of_satellite(double period);
+
+/**
+ * Function converts minutes to seconds
+ *
+ * @param minutes minutes to convert
+ * @return seconds
+ */
 double convert_to_sec(double minutes);
 
 int main()
@@ -29,7 +44,7 @@ int main()
     double minutes{};
     std::cin >> minutes;
 
-    double period{convert_to_sec(minutes)};
+    const double period{convert_to_sec(minutes)};
 
     std::cout << '\n'
               << std::setprecision(3) << "For orbital period of " << minutes
@@ -40,25 +55,19 @@ int main()
 }
 
 
-// altitude_of_satellite takes the orbital period as parameter,
-// and returns the orbital height necessary
+
 double altitude_of_satellite(double period)
 {
-    //
-    // Calculates the orbital height necessary to sustain
-    // an orbital period
-    double numerator{Constant::g_G * Constant::g_mass * std::pow(period, 2)};
-    double denominator{4.0 * std::pow(std::numbers::pi, 2)};
+    const double numerator{Constant::g_G * Constant::g_mass * (period * period)};
+    constexpr double denominator{4.0 * (std::numbers::pi * std::numbers::pi)};
 
-    double height = std::cbrt((numerator / denominator)) - Constant::g_radius_e;
+    const double height = std::cbrt((numerator / denominator)) - Constant::g_radius_e;
 
     return height;
 }
 
-// convert_to_sec converts the input for the orbital period
-// provides in minutes into seconds to properly calculates orbital height
 double convert_to_sec(double minutes)
 {
-    double sec{minutes * 60.0};
+    const double sec{minutes * 60.0};
     return sec;
 }

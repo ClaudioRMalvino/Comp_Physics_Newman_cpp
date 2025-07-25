@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 
+// Namespaces
+
 namespace plt = matplotlibcpp;
 
 namespace Constant
@@ -20,7 +22,6 @@ namespace Constant
 }
 
 // Forward declarations
-
 /**
  * Function to calculate the integral of the function f(x) = (1 - x^2)^(1/2)
  * @param num_slices number of slices to use in the numerical integration

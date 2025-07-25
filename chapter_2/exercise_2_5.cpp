@@ -11,16 +11,48 @@
 
 namespace Constant
 {
-    // Global constants
-    const double g_m{0.5109989461};  // Mass of electron [eV]
-    const double g_h_bar{6.5821196}; // Reduced Planck constant [eV*s]
-{
+// Global constants
+constexpr double g_m{0.5109989461};  // Mass of electron [eV]
+constexpr double g_h_bar{6.5821196}; // Reduced Planck constant [eV*s]
+}
+
 // Forward function declarations
-double k1(double E);
-double k2(double E, double V);
+
+/** Calculates the wavevector k1 for a given energy
+ * @param energy energy of electron in eV
+ * @return wavevector k1
+ */
+double k1(double energy);
+
+/** Calculates the wavevector k2 for a given energy and potential step
+ * @param energy energy of electron in eV
+ * @param potential energy of potential step in eV
+ * @return wavevector k2
+ */
+double k2(double energy, double potential);
+
+/** Calculates the transmission probability for a given wavevector k1 and k2
+ * @param k1 wavevector k1
+ * @param k2 wavevector k2
+ * @return transmission probability
+ */
 double T(double k1, double k2);
+
+/** Calculates the reflection probability for a given wavevector k1 and k2
+ * @param k1 wavevector k1
+ * @param k2 wavevector k2
+ * @return reflection probability
+ */
 double R(double k1, double k2);
+
+/** Prompts user for energy
+ * @return energy input
+ */
 std::string E_input();
+
+/** Prompts user for potential step
+ * @return potential step input
+ */
 std::string V_input();
 
 int main()
@@ -28,51 +60,49 @@ int main()
 
     std::cout << "Calculating transimission and reflection probabilities"
               << '\n'
-              << "Input 'q' to quit" << '\n'
-              << std::endl;
+              << "Input 'q' to quit" << '\n';
 
     while (true)
     {
-
-        auto inputE{E_input()};
+        const std::string inputE{E_input()};
         if (inputE == "q")
         {
             break;
         }
-        double E = std::stod(inputE);
+        const double energy = std::stod(inputE);
 
-        auto inputV{V_input()};
+        const std::string inputV{V_input()};
         if (inputV == "q")
         {
             break;
         }
-        double V = std::stod(inputV);
+        const double potential = std::stod(inputV);
 
-        if (E <= V)
+        if (energy <= potential)
         {
-            double k{-k1(E)};
+            const double k{-k1(energy)};
             std::cout << std::fixed << std::setprecision(3)
                       << "wavevector: " << k
-                      << ", Probability of reflection: 100%" << std::endl;
+                      << ", Probability of reflection: 100%" << '\n';
         }
         else
         {
-            std::cout << "\nGiven an electron of mass " << m
-                      << " eV, initial energy " << E
-                      << " eV and potential step " << V << "eV:\n\n";
+            std::cout << "\nGiven an electron of mass " << Constant::g_m
+                      << " eV, initial energy " << energy
+                      << " eV and potential step " << potential << "eV: \n";
 
-            double k1_val{k1(E)};
-            double k2_val{k2(E, V)};
+            const double k1_val{k1(energy)};
+            const double k2_val{k2(energy, potential)};
 
             std::cout << std::fixed << std::setprecision(1)
                       << "Probability of reflection: "
-                      << R(k1_val, k2_val) * 100
+                      << R(k1_val, k2_val) * 100.0
                       << "% || wavevector: " << std::setprecision(3) << -k1_val
                       << '\n';
 
             std::cout << std::fixed << std::setprecision(1)
                       << "Probability of transmission: "
-                      << T(k1_val, k2_val) * 100
+                      << T(k1_val, k2_val) * 100.0
                       << "% || wavevector: " << std::setprecision(3) << k2_val
                       << '\n';
         }
@@ -82,29 +112,24 @@ int main()
 
 // Function definitions
 
-// k1 calculates initial wave vector k1
-double k1(double E)
+double k1(const double energy)
 {
-    return std::sqrt(2 * Constant::g_m * E / Constant::g_h_bar);
+    return std::sqrt(2 * Constant::g_m * energy / Constant::g_h_bar);
 }
 
-// k2 calculates reflected wave vector k2
-double k2(double E, double V)
+double k2(const double energy, const double potential)
 {
-    return std::sqrt(2 * Constant:g_m * (E - V) / Constant::g_h_bar);
+    return std::sqrt(2 * Constant::g_m * (energy - potential)
+                        / Constant::g_h_bar);
 }
 
-// R calculates the probability of reflecting back towards the initial source
-// given k1 and k2
 double R(double k1, double k2)
 {
-    double k_diff = k1 - k2;
-    double k_sum = k1 + k2;
+    const double k_diff = k1 - k2;
+    const double k_sum = k1 + k2;
     return (k_diff * k_diff) / (k_sum * k_sum);
 }
 
-// T calculates the probability of transmission over the potential step
-// given k1 and k2
 double T(double k1, double k2)
 {
 
@@ -112,7 +137,6 @@ double T(double k1, double k2)
     return (4 * k1 * k2) / (k_sum * k_sum);
 }
 
-// Prompts user to input energy of the electron
 std::string E_input()
 {
 
@@ -122,7 +146,6 @@ std::string E_input()
     return inputE;
 }
 
-// Prompts user to input the energy of the potential step
 std::string V_input()
 {
 

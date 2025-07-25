@@ -11,21 +11,24 @@
 #include <string>
 #include <vector>
 
+// Namespace declaration
+namespace mp = boost::multiprecision;
+
 // Function Declaration
 /**
  * @brief Calculates the factorial of an integer
  * @param x The integer to calculate factorial for
- * @return The factorial as a boost::multiprecision::cpp_int
+ * @return The factorial as a mp::cpp_int
  */
-boost::multiprecision::cpp_int factorial(int x);
+mp::cpp_int factorial(int x);
 
 /**
  * @brief Calculates the binomial coefficient (n choose k)
  * @param n The total number of items
  * @param k The number of items to choose
- * @return The binomial coefficient as a boost::multiprecision::cpp_int
+ * @return The binomial coefficient as a mp::cpp_int
  */
-boost::multiprecision::cpp_int binomial_coefficient(int n, int k);
+mp::cpp_int binomial_coefficient(int n, int k);
 
 /**
  * @brief Prompts for and reads the value of n from user input
@@ -52,16 +55,16 @@ void check_value(int N);
 int main()
 {
 
-    std::cout << "Pascal's Triangle Generator" << std::endl;
+    std::cout << "Pascal's Triangle Generator" << '\n';
 
     while (true)
     {
-        auto Ninput{N_input()};
+        const std::string Ninput{N_input()};
         if (Ninput == "q")
         {
             break;
         }
-        int N{std::stoi(Ninput)};
+        const int N {std::stoi(Ninput)};
 
         try
         {
@@ -80,10 +83,10 @@ int main()
 
 // Function Definitions
 
-boost::multiprecision::cpp_int factorial(int x)
+mp::cpp_int factorial(int x)
 {
 
-    boost::multiprecision::cpp_int f = 1;
+    mp::cpp_int f = 1;
     for (int i : std::views::iota(1, x + 1))
     {
         f *= i;
@@ -91,7 +94,7 @@ boost::multiprecision::cpp_int factorial(int x)
     return f;
 }
 
-boost::multiprecision::cpp_int binomial_coefficient(int n, int k)
+mp::cpp_int binomial_coefficient(int n, int k)
 {
 
     if (k == 0)
@@ -100,10 +103,10 @@ boost::multiprecision::cpp_int binomial_coefficient(int n, int k)
     }
     else
     {
-        boost::multiprecision::cpp_int numerator = factorial(n);
-        boost::multiprecision::cpp_int denominator =
+        mp::cpp_int numerator = factorial(n);
+        mp::cpp_int denominator =
             factorial(k) * factorial(n - k);
-        boost::multiprecision::cpp_int binomial_coef = numerator / denominator;
+        mp::cpp_int binomial_coef = numerator / denominator;
         return binomial_coef;
     }
 }
@@ -125,7 +128,7 @@ void pascals_triangle(int N)
     std::cout << n << std::endl; // prints first row
     while (n < N)
     {
-        std::vector<boost::multiprecision::cpp_int> triangle;
+        std::vector<mp::cpp_int> triangle;
         for (int K : std::views::iota(0, n + 1))
         {
             triangle.push_back(binomial_coefficient(n, K));
